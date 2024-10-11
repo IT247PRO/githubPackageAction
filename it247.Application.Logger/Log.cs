@@ -6,5 +6,10 @@
         {
             Console.WriteLine(text);
         }
+
+        public void Log(Exception exception)
+        {
+            Console.WriteLine(exception.Message.ToString());
+        }
     }
 }
