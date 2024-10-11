@@ -1,27 +1,32 @@
 name: ci
+
 on:
   push:
     branches: [ "main" ]
-    tags:
-    - "v[0-9]+.[0-9]+.[0-9]+"
   workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-      
-    - name: Set VERSION variable from tag
-      run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
+
+    - name: Set VERSION variable
+      run: echo "VERSION=1.0.0" >> $GITHUB_ENV
+
     - name: Build
-      run: dotnet build --configuration Release /p:Version=${VERSION}
+      run: dotnet build --configuration Release /p:Version=${{ env.VERSION }}
+
     - name: Test
-      run: dotnet test --configuration Release /p:Version=${VERSION} --no-build
+      run: dotnet test --configuration Release /p:Version=${{ env.VERSION }} --no-build
+
     - name: Pack
-      run: dotnet pack --configuration Release /p:Version=${VERSION} --no-build --output .
+      run: dotnet pack --configuration Release /p:Version=${{ env.VERSION }} --no-build --output .
+
     - name: Push
-      run: dotnet nuget push NuGet.Workflow.${VERSION}.nupkg --source https://nuget.pkg.github.com/acraven/index.json --api-key ${GITHUB_TOKEN}
+      run: dotnet nuget push *.${{ env.VERSION }}.nupkg --source https://nuget.pkg.github.com/acraven/index.json --api-key ${{ secrets.GITHUB_TOKEN }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
