@@ -6,5 +6,9 @@
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
-
+	<PropertyGroup>
+		<PackageId>NuGet.Workflow</PackageId>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/IT247PRO/githubPackageAction</RepositoryUrl>
+	</PropertyGroup>
 </Project>
